@@ -1,0 +1,8 @@
+C:\Users\JhonJairo\source\repos\WebAppTienda\obj\MCD\Debug\net8.0\WebAppTienda.csproj.AssemblyReference.cache
+C:\Users\JhonJairo\source\repos\WebAppTienda\obj\MCD\Debug\net8.0\WebAppTienda.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\JhonJairo\source\repos\WebAppTienda\obj\MCD\Debug\net8.0\WebAppTienda.AssemblyInfoInputs.cache
+C:\Users\JhonJairo\source\repos\WebAppTienda\obj\MCD\Debug\net8.0\WebAppTienda.AssemblyInfo.cs
+C:\Users\JhonJairo\source\repos\WebAppTienda\obj\MCD\Debug\net8.0\WebAppTienda.csproj.CoreCompileInputs.cache
+C:\Users\JhonJairo\source\repos\WebAppTienda\obj\MCD\Debug\net8.0\WebAppTienda.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\JhonJairo\source\repos\WebAppTienda\obj\MCD\Debug\net8.0\WebAppTienda.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\JhonJairo\source\repos\WebAppTienda\obj\MCD\Debug\net8.0\WebAppTienda.sourcelink.json

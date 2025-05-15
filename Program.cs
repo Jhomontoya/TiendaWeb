@@ -4,6 +4,11 @@ using WebAppTienda.Datos.WebAppTienda.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Servicios
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // Agrega el contexto al contenedor
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -23,6 +28,7 @@ var app = builder.Build();
 //var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

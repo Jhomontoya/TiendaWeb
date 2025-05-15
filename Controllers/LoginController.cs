@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using WebAppTienda.Constants;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebAppTienda.Models;
-using System.Linq;
+using WebAppTienda.Datos;
 using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Security.Claims;
+using WebAppTienda.Datos.WebAppTienda.Data;
 
 namespace WebAppTienda.Controllers
 {
@@ -15,54 +14,56 @@ namespace WebAppTienda.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration _config;
+        private readonly ApplicationDbContext _context;
 
-        public LoginController(IConfiguration config)
+        public LoginController(IConfiguration config, ApplicationDbContext context)
         {
             _config = config;
+            _context = context;
         }
 
         [HttpPost]
-        public IActionResult Login(LoginUser UserLogin)
+        public IActionResult Login(LoginUser userLogin)
         {
-            var user = Authenticate(UserLogin);
+            var user = _context.Usuarios.FirstOrDefault(u =>
+                u.Nombre.ToLower() == userLogin.Nombre.ToLower() &&
+                u.Clave == userLogin.Clave &&
+                u.Estado.ToLower() == "activo");
 
             if (user != null)
             {
-                var token = Generate(user);
-                return Ok(token);
+                var token = GenerateToken(user);
+
+                // Registrar login
+                _context.LoginRegistros.Add(new LoginRegistro
+                {
+                    UsuarioNombre = user.Nombre,
+                    FechaHora = DateTime.Now
+                });
+                _context.SaveChanges();
+
+                return Ok(new { token });
             }
 
-            return NotFound("Usuario No Encontrado");
+            return NotFound("Usuario no encontrado o inactivo.");
         }
 
-        private Usuario Authenticate(LoginUser UserLogin)
+        private string GenerateToken(Usuario user)
         {
-            var currentUser = UsuarioConstant.Usuarios.FirstOrDefault(user =>
-                user.Nombre.ToLower() == UserLogin.Nombre.ToLower() &&
-                user.Clave == UserLogin.Clave);
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["WebAppTienda:key"]));
+            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            return currentUser;
-        }
-
-        private string Generate(Usuario User)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["WebAppTienda:key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            // Crear los Claims
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, User.Nombre),
-                new Claim(ClaimTypes.HomePhone, User.Celular),
-                new Claim(ClaimTypes.Email, User.Email),
-                new Claim(ClaimTypes.Role, User.Roles)
+                new Claim(ClaimTypes.Name, user.Nombre),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Roles)
             };
 
-            // Crear el token
             var token = new JwtSecurityToken(
-                issuer: _config["WebAppTienda:Issuer"],
-                audience: _config["WebAppTienda:Audience"],
-                claims: claims,
+                _config["WebAppTienda:Issuer"],
+                _config["WebAppTienda:Audience"],
+                claims,
                 expires: DateTime.Now.AddMinutes(30),
                 signingCredentials: credentials);
 

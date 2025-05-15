@@ -1,8 +1,9 @@
 ﻿namespace WebAppTienda.Datos
 {
+    //using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+    //using WebAppTienda.Models;
     using global::WebAppTienda.Models;
     using Microsoft.EntityFrameworkCore;
-    //using WebAppTienda.Models;
 
     namespace WebAppTienda.Data
     {
@@ -15,6 +16,7 @@
 
             public DbSet<Usuario> Usuarios { get; set; }
             public DbSet<LoginRegistro> LoginRegistros { get; set; }
+            public DbSet<LoginHistory> LoginHistories { get; set; }
             public ApplicationDbContext(DbSet<LoginRegistro> loginRegistros)
             {
                 LoginRegistros = loginRegistros;

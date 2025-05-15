@@ -50,6 +50,10 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.AspNet.Identity.AspNetCoreCompat": {
+              "target": "Package",
+              "version": "[0.3.4, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.15, )"
@@ -68,9 +72,13 @@
               "target": "Package",
               "version": "[9.0.4, )"
             },
+            "Microsoft.VisualStudio.Web.CodeGeneration.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.0, )"
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
-              "version": "[8.1.0, )"
+              "version": "[8.1.1, )"
             }
           },
           "imports": [
